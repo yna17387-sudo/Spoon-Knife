@@ -1,0 +1,23 @@
+git branch -m main DUAAMAZN-AHMED-ALBAZAEHA
+git fetch origin
+git branch -u origin/DUAAMAZN-AHMED-ALBAZAEHA DUAAMAZN-AHMED-ALBAZAEHA
+git remote set-head origin -aname: Jekyll site CI
+
+on:
+  push:
+    branches: [ "DUAAMAZN-AHMED-ALBAZAEHA" ]
+  pull_request:
+    branches: [ "DUAAMAZN-AHMED-ALBAZAEHA" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the site in the jekyll/builder container
+      run: |
+        docker run \
+        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
+        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
